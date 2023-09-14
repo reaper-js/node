@@ -1,13 +1,21 @@
 import * as fs from 'fs'
 import chalk from 'chalk'
-const getNotes = () =>  "Are you ok?"
+const getNotes = () =>  {
+    const noteData = loadNotes()
+    //const dataJSON = JSON.parse(noteData.toString())
+    noteData.forEach(note => {
+        console.log(note.title)        
+    });
+}
 
 
 const addNote = function(title, body){
     const notes = loadNotes()
+    //const duplicateNotes = notes.filter((note)=>  note.title === title)
+    //more efficient version
+    const duplicateNote = notes.find((note) => note.title === title)
 
-    const duplicateNotes = notes.filter((note)=>  note.title === title)
-    if(duplicateNotes.length === 0){
+    if(!duplicateNote){
         notes.push({
             title: title,
             body:body
@@ -31,7 +39,19 @@ const removeNotes = function(title){
     saveNotes(existNotes)
 }
 
-
+const readNotes = (title) =>{
+    const notes = loadNotes()
+    const currrentNote = notes.find((note) => note.title === title )
+    if(currrentNote){
+        console.log(chalk.green(currrentNote.title));
+        console.log(currrentNote.body);
+    }else{
+        console.log(chalk.redBright('Note not found'));
+    }
+    
+    //console.log(chalk.green(currrentNote.title));
+    //console.log(currrentNote.body);
+}
 
 const saveNotes = function(notes){
     const dataJSON = JSON.stringify(notes)
@@ -47,9 +67,12 @@ const loadNotes = function(){
     }
     
 }
+
+
 export {
     getNotes,
     addNote,
     loadNotes,
     removeNotes,
+    readNotes,
 };

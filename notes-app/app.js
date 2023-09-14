@@ -49,7 +49,8 @@ yarg.command({
     command:'list',
     describe:'list the notes',
     handler(){
-        console.log("Listing the notes")
+        console.log(chalk.bgCyanBright("Listing your notes"))
+        notes.getNotes();
     }
 })
 
@@ -57,8 +58,16 @@ yarg.command({
 yarg.command({
     command:'read',
     describe:'read the notes',
-    handler(){
-        console.log("Reading the notes")
+    builder:{
+        title:{
+            describe:'Note Title',  
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler(argv){
+        //console.log("Reading the notes")
+        notes.readNotes(argv.title)
     }
 })
 yarg.version('1.1.0')
